@@ -10,11 +10,11 @@ export async function POST(req: Request) {
     const sum = body.sum || 'неизвестная сумма';
 
     // ВАЖНО: правильный URL с api. и /bot
-    const res = await fetch(`https://telegram.org${token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: chatId,
+        chat_id: chatId, 
         text: `🚀 VIP заказ в RetailCRM! \n💰 Сумма: ${sum} ₸ \n✅ Прокси на Vercel работает!`
       }),
     });
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-    return NextResponse.json({ 
+    return NextResponse.json({
         message: "Эндпоинт живой! Для уведомлений из CRM используй POST",
         status: "ready"
     });
