@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       body = {};
     }
 
-    const res = await fetch(`https://telegram.org{token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
