@@ -1,23 +1,29 @@
 import { NextResponse } from 'next/server';
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
     const token = "8601000549:AAFAvJPNXOe9Vu5FRiXz70TSvmLpe4sVGdE";
     const chatId = "481948421";
 
-    const res = await fetch(`https://telegram.org{token}/sendMessage`, {
+    // Пытаемся получить данные из заказа, если они есть
+    const body = await req.json().catch(() => ({}));
+    const sum = body.sum || 'неизвестная сумма';
+
+    // ВАЖНО: правильный URL с api. и /bot
+    const res = await fetch(`https://telegram.org${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: "👋 ПРИВЕТ! Прокси на Vercel работает!"
+        text: `🚀 VIP заказ в RetailCRM! \n💰 Сумма: ${sum} ₸ \n✅ Прокси на Vercel работает!`
       }),
     });
 
     const data = await res.json();
     return NextResponse.json({ status: 'ok', sent: data.ok });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Здесь была ошибка: нужно NextResponse и убедиться, что error.message существует
+    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
   }
 }
 
