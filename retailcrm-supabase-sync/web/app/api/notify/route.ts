@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const message = `🚀 VIP заказ из CRM!\n💰 Сумма: ${sum} ₸\n👤 Клиент: ${customer}`;
 
     // 2. Отправляем в Telegram
-    const tgRes = await fetch(`https://api.telegram.org${token}/sendMessage`, {
+    const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
