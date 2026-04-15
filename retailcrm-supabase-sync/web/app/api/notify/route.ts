@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const chatId = "481948421";
 
     // Сначала проверим бота через getMe
-    const testRes = await fetch(`https://telegram.org{token}/getMe`);
+    const testRes = await fetch(`https://api.telegram.org/bot${token}/getMe`);
     const testData = await testRes.json();
 
     if (!testData.ok) {
