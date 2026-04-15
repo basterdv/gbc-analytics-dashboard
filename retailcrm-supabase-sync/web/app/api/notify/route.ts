@@ -9,14 +9,6 @@ export async function POST(req: Request) {
     const token = "8601000549:AAFAvJPNXOe9Vu5FRiXz70TSvmLpe4sVGdE";
     const chatId = "481948421";
 
-    // Попытка прочитать тело, если оно есть, но не падать, если оно пустое
-    let body = {};
-    try {
-      body = await req.json();
-    } catch (e) {
-      body = {};
-    }
-
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
