@@ -1,31 +1,34 @@
 import { NextResponse } from 'next/server';
 
-// Переключаем на Edge Runtime — это убирает 90% ошибок 500 на Vercel
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
   try {
-    // ВАЖНО: Токен бота и ID чата
-    const token = "8601000549:AAFAvJPNXOe9Vu5FRiXz70TSvmLpe4sVGdE";
+    const token = "8601000549:AAFAvJPNxOe9Vu5FRiXz70TSvmLpe4sVGdE";
     const chatId = "481948421";
 
-    const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
+    // Сначала проверим бота через getMe
+    const testRes = await fetch(`https://telegram.org{token}/getMe`);
+    const testData = await testRes.json();
+
+    if (!testData.ok) {
+      return NextResponse.json({ success: false, error: "Ошибка токена", details: testData });
+    }
+
+    // Если токен ок, отправляем сообщение
+    const res = await fetch(`https://telegram.org{token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: "🚀 ХЬЮСТОН, МЫ В ЭФИРЕ! Прокси на Edge Runtime сработал."
+        text: "✅ Токен исправлен! Бот работает через Vercel."
       }),
     });
 
     const data = await res.json();
-    return NextResponse.json({ success: data.ok });
-  } catch (error: any) {
-    // Выводим ошибку, чтобы она была видна в логах Vercel
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
+    return NextResponse.json({ success: data.ok, info: data.result });
 
-export async function GET() {
-  return NextResponse.json({ message: "Edge Runtime готов к работе" });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
 }
